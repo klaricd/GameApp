@@ -23,32 +23,29 @@ class GenresTableViewController: UITableViewController {
         getData(from: url)
     }
     
+    deinit {
+        print("Deinit Genre details view controller")
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return genres?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "genreCell", for: indexPath) as? GenresTableViewCell {
-            
-            let genre = genres?.results[indexPath.row]
-    
-            cell.genreName.text = genre?.name
-            cell.genreGamesCount.text = "Games: \(genre?.games_count ?? 0)"
-            
-            if let url = URL(string: genre!.image_background) {
-                cell.genreImage.kf.setImage(with: url)
-            }
-            
-            if selectedCells.contains(genre!.id) {
-                cell.accessoryType = .checkmark
-            } else {
-                cell.accessoryType = .none
-            }
-            
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "genreCell", for: indexPath) as? GenresTableViewCell else { return UITableViewCell() }
+        
+        let genre = genres?.results[indexPath.row]
+        
+        cell.configure(with: genre!, selected: selectedCells.contains(genre!.id))
+        
+        if selectedCells.contains(genre!.id) {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
         }
         
-        return UITableViewCell()
+        return cell
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -79,18 +76,9 @@ class GenresTableViewController: UITableViewController {
                 return
             }
             
-            var genre: Genre?
-            do {
-                genre = try JSONDecoder().decode(Genre.self, from: data)
-            } catch {
-                print(error)
-            }
-            
-            guard let json = genre else {
-                return
-            }
-            
+            guard let json = try? JSONDecoder().decode(Genre.self, from: data) else { return }
             self.genres = json
+            
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
