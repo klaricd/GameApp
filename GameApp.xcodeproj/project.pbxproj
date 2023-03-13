@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6317211D29941940002AA660 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317211C29941940002AA660 /* SettingsViewController.swift */; };
 		6328ED3529924DC2001700AF /* GenresTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6328ED3429924DC2001700AF /* GenresTableViewCell.swift */; };
+		63625ECE29BF3BE20045DC96 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 63625ECD29BF3BE20045DC96 /* .gitignore */; };
 		639AC27C299252610064DC95 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 639AC27B299252610064DC95 /* Kingfisher */; };
 		639AC27E2992B98A0064DC95 /* GameDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639AC27D2992B98A0064DC95 /* GameDetailsViewController.swift */; };
 		639AC2812993A8510064DC95 /* GamesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639AC2802993A8510064DC95 /* GamesTableViewCell.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		6317211C29941940002AA660 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		6328ED3429924DC2001700AF /* GenresTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresTableViewCell.swift; sourceTree = "<group>"; };
+		63625ECD29BF3BE20045DC96 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		639AC27D2992B98A0064DC95 /* GameDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailsViewController.swift; sourceTree = "<group>"; };
 		639AC2802993A8510064DC95 /* GamesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesTableViewCell.swift; sourceTree = "<group>"; };
 		639AC2822993AC530064DC95 /* DetailsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsDataModel.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 		63E38A70298BDB7B00EFB223 = {
 			isa = PBXGroup;
 			children = (
+				63625ECD29BF3BE20045DC96 /* .gitignore */,
 				63E38A7B298BDB7B00EFB223 /* GameApp */,
 				63E38A7A298BDB7B00EFB223 /* Products */,
 			);
@@ -186,6 +189,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63625ECE29BF3BE20045DC96 /* .gitignore in Resources */,
 				63E38A89298BDB7C00EFB223 /* LaunchScreen.storyboard in Resources */,
 				63E38A86298BDB7C00EFB223 /* Assets.xcassets in Resources */,
 				63E38A84298BDB7B00EFB223 /* Main.storyboard in Resources */,
