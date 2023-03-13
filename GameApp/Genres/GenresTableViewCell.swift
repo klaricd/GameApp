@@ -13,10 +13,17 @@ class GenresTableViewCell: UITableViewCell {
     @IBOutlet weak var genreName: UILabel!
     @IBOutlet weak var genreGamesCount: UILabel!
     
+    func configure(with genre: GenresResults, selected: Bool) {
+        genreName.text = genre.name
+        genreGamesCount.text = "Games: \(genre.games_count)"
+        if let url = URL(string: genre.image_background) {
+            genreImage.kf.setImage(with: url)
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        selectionStyle = .none
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
