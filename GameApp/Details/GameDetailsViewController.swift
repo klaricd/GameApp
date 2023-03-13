@@ -17,14 +17,18 @@ class GameDetailsViewController: UIViewController {
     @IBOutlet weak var gameDescription: UITextView!
     
     var details: Detail?
+    var id: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let storedCellID = UserDefaults.standard.integer(forKey: "selectedCell") as Int
-        let url = "https://api.rawg.io/api/games/\(storedCellID)?key=272eadaec95d470aa384544e0225123e&"
-        
+        guard let id = id else { return }
+        let url = "https://api.rawg.io/api/games/\(id)?key=272eadaec95d470aa384544e0225123e&"
         getData(from: url)
+    }
+    
+    deinit {
+        print("Deinit Game details view controller")
     }
     
     func getData(from url: String) {
@@ -35,36 +39,38 @@ class GameDetailsViewController: UIViewController {
                 return
             }
             
-            var details: Detail?
-            
-            do {
-                details = try JSONDecoder().decode(Detail.self, from: data)
-            } catch {
-                print(error)
-            }
-            
-            guard let json = details else {
-                return
-            }
+            guard let json = try? JSONDecoder().decode(Detail.self, from: data) else { return }
             
             DispatchQueue.main.async {
-                self.gameName.text = json.name
-                self.gameReleaseDate.text = json.released
+                self.gameName.text = (json.name)
+                
+                if let date = self.dateFormat(date: json.released) {
+                    self.gameReleaseDate.text = date
+                } else {
+                    print("Invalid date string")
+                }
+                
                 self.gameRating.text = String(json.rating)
                 self.gameMovies.text = String(json.movies_count)
-                self.gameDescription.text = json.description
+                
+                let data = Data(json.description.utf8)
+                if let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) {
+                    let options: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 17, weight: .medium),
+                                                                  .foregroundColor: UIColor.black]
+
+                    let customString = NSAttributedString(string: attributedString.string, attributes: options)
+                    self.gameDescription.attributedText = customString
+                }
                 
                 let text = json.website
                 let attributedString = NSMutableAttributedString(string: text)
                 attributedString.addAttribute(.link, value: URL(string: text)!, range: NSMakeRange(0, text.utf16.count))
-                print(attributedString)
                 self.gameWebsite.attributedText = attributedString
                 self.gameWebsite.isUserInteractionEnabled = true
                 self.gameWebsite.numberOfLines = 0
                 
                 let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
                 self.gameWebsite.addGestureRecognizer(tapGesture)
-                
             }
             
             self.details = json
@@ -74,14 +80,22 @@ class GameDetailsViewController: UIViewController {
     
     
     // MARK: - Functions
+    func dateFormat(date: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        guard let date = dateFormatter.date(from: date) else { return nil }
+        dateFormatter.dateFormat = "MMMM d, yyyy"
+        var formattedString = dateFormatter.string(from: date)
+        formattedString.replaceSubrange(formattedString.startIndex...formattedString.startIndex, with: String(formattedString[formattedString.startIndex]).capitalized)
+        return formattedString
+    }
+    
     @objc func handleTap(_ sender: UITapGestureRecognizer) {
-        print("tapped")
         let text = (sender.view as! UILabel).attributedText
         var range = NSRange(location: 0, length: text!.length)
         if let url = text!.attribute(.link, at: 0, effectiveRange: &range) as? URL {
-            print("url")
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
-
+    
 }
